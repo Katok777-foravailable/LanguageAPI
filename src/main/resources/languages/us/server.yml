@@ -1,0 +1,5 @@
+commands:
+  languageapi:
+    help: "&e&m--------&r&e&lHelp for command &a/languageapi&r&e&m--------\n
+        &e/languageapi reload &a- reloads the plugin"
+    reload-successful: "&aYou have successfully reloaded the plugin!"

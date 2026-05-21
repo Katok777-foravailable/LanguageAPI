@@ -1,0 +1,5 @@
+commands:
+  languageapi:
+    help: "&e&m--------&r&e&lПомощь по команде &a/languageapi&r&e&m--------\n
+        &e/languageapi reload &a- перезагружает плагин"
+    reload-successful: "&aВы успешно перезагрузили плагин!"
