@@ -11,10 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,6 +76,10 @@ public class ConfigManager {
         return result;
     }
 
+    public void clear() {
+        configs.clear();
+    }
+
     /**
      * Выдает конфигурационный файл, по пути, от папки самого плагина, например - getConfiguration("config.yml")
      * @return конфигурацию
@@ -107,28 +108,12 @@ public class ConfigManager {
      * @param startWithPath - путь
      * @return список конфигураций
      */
-    public List<YamlConfiguration> getConfigurations(String startWithPath) {
-        List<YamlConfiguration> result = new ArrayList<>();
-        for(String path: configs.keySet()) {
-            if(!path.startsWith(startWithPath)) continue;
+    public List<Map.Entry<String, YamlConfiguration>> getConfigurations(String startWithPath) {
+        List<Map.Entry<String, YamlConfiguration>> result = new ArrayList<>();
+        for(Map.Entry<String, YamlConfiguration> configurationEntry: configs.entrySet()) {
+            if(!configurationEntry.getKey().startsWith(startWithPath)) continue;
 
-            result.add(configs.get(path));
-        }
-
-        return result;
-    }
-
-    /**
-     * Сканирует конфигурации, и выдает список путей конфигураций путь которых начинаеться с startWithPath
-     * @param startWithPath - путь
-     * @return список путей конфигураций
-     */
-    public List<String> getConfigurationPaths(String startWithPath) {
-        List<String> result = new ArrayList<>();
-        for(String path: configs.keySet()) {
-            if(!path.startsWith(startWithPath)) continue;
-
-            result.add(path);
+            result.add(configurationEntry);
         }
 
         return result;
@@ -145,6 +130,8 @@ public class ConfigManager {
 
         YamlConfiguration configCfg = new YamlConfiguration();
         configCfg.load(configFile);
+
+        path = path.replace(File.separator, "/");
 
         if(configs.containsKey(path)) {
             configs.replace(path, configCfg);
@@ -168,6 +155,8 @@ public class ConfigManager {
 
         configuration.save(configFile);
 
+        path = path.replace(File.separator, "/");
+
         configs.put(path, YamlConfiguration.loadConfiguration(configFile));
     }
 
@@ -181,7 +170,7 @@ public class ConfigManager {
             configFile.createNewFile();
         }
         YamlConfiguration configuration = new YamlConfiguration();
-        if(configs.containsKey(path)) configuration = configs.get(path);
+        if(configs.containsKey(path.replace(File.separator, "/"))) configuration = configs.get(path);
 
         configuration.save(configFile);
     }
@@ -191,7 +180,7 @@ public class ConfigManager {
      */
     public void saveAll() {
         for(String path: configs.keySet()) {
-            File configFile = new File(instance.getDataFolder().toPath().toAbsolutePath() + File.separator + path);
+            File configFile = new File(instance.getDataFolder().toPath().toAbsolutePath() + File.separator + path.replace('/', File.separatorChar));
             try {
                 configs.get(path).save(configFile);
             } catch (IOException e) {

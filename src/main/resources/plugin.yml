@@ -5,17 +5,10 @@ author: Katok777
 api-version: 1.16
 
 commands:
-  setlanguage:
-    usage: "/setlanguage <language> <player>"
-    permission: languageapi.setlanguage
   languageapi:
     usage: "/languageapi"
 
 permissions:
-  languageapi.setlanguage:
-    default: op
-  languageapi.setlanguage.other:
-    default: op
   languageapi.reload:
     default: op
 
