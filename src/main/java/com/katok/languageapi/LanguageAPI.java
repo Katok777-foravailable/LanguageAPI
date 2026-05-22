@@ -28,4 +28,8 @@ public class LanguageAPI extends JavaPlugin {
 
         new MainExpansion(this, translationService).register();
     }
+
+    public TranslationService getTranslationService() {
+        return translationService;
+    }
 }
