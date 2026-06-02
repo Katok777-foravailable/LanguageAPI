@@ -22,7 +22,11 @@ public class TranslationService {
     }
 
     public Map<String, YamlConfiguration> getLanguage(Player player) {
-        Map<String, YamlConfiguration> configurationMap = languages.get(player.locale().getLanguage());
+        String locale = getDefaultLanguage();
+        if (player != null) {
+            locale = player.locale().getLanguage();
+        }
+        Map<String, YamlConfiguration> configurationMap = languages.get(locale);
         if (configurationMap == null) {
             configurationMap = Objects.requireNonNull(languages.get(getDefaultLanguage()));
         }
